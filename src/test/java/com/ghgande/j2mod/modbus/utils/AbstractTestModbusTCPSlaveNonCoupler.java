@@ -15,8 +15,8 @@
  */
 package com.ghgande.j2mod.modbus.utils;
 
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
+import com.ghgande.j2mod.modbus.slave.ModbusTCPSlave;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
@@ -42,15 +42,14 @@ public class AbstractTestModbusTCPSlaveNonCoupler extends AbstractTestModbusTCPS
         try {
             port = PORT + 1;
             modPollTool = TestUtils.loadModPollTool();
-            ModbusSlave slave = ModbusSlaveFactory.createTCPSlave(PORT, 5);
+            ModbusTCPSlave slave = ModbusSlaveFactory.createTCPSlave(PORT, 5);
             slave.addProcessImage(UNIT_ID, getSimpleProcessImage());
             slave.open();
 
             slave = ModbusSlaveFactory.createTCPSlave(PORT + 1, 5);
             slave.addProcessImage(UNIT_ID, getSimpleProcessImage());
             slave.open();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             tearDownSlave();
             fail(String.format("Cannot initialise tests - %s", e.getMessage()));
         }

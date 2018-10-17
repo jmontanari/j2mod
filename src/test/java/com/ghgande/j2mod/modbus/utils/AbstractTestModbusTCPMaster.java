@@ -22,8 +22,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
 import com.ghgande.j2mod.modbus.msg.*;
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
+import com.ghgande.j2mod.modbus.slave.ModbusTCPSlave;
 import com.ghgande.j2mod.modbus.util.BitVector;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -53,8 +53,7 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
             slave = createTCPSlave();
             master = new ModbusTCPMaster(LOCALHOST, PORT);
             master.connect();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             tearDownSlave();
             fail(String.format("Cannot initialise tests - %s", e.getMessage()));
         }
@@ -74,18 +73,16 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
      * Creates a Slave to use for testing
      *
      * @return Listener of the slave
-     *
      * @throws IOException If slave cannot be created
      */
-    public static ModbusSlave createTCPSlave() throws Exception {
-        ModbusSlave slave;
+    public static ModbusTCPSlave createTCPSlave() throws Exception {
+        ModbusTCPSlave slave;
         try {
             // Create a TCP slave on the 'all interfaces' address 0.0.0.0
             slave = ModbusSlaveFactory.createTCPSlave(PORT, 5);
             slave.addProcessImage(UNIT_ID, getSimpleProcessImage());
             slave.open();
-        }
-        catch (Exception x) {
+        } catch (Exception x) {
             throw new Exception(x.getMessage());
         }
         return slave;
@@ -97,7 +94,6 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
      * @param functionCode Function code to use
      * @param register     Register number
      * @param count        Number of registers
-     *
      * @return Response object
      */
     protected static ModbusResponse readRequest(int functionCode, int register, int count) {
@@ -129,23 +125,20 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
             req.setUnitID(UNIT_ID);
 
             // Prepare the transaction
-            trans = (ModbusTCPTransaction)transport.createTransaction();
+            trans = (ModbusTCPTransaction) transport.createTransaction();
             trans.setRequest(req);
             trans.setReconnecting(true);
 
             // Execute the transaction
             trans.execute();
             return trans.getResponse();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.info("Got error for request to {}:{} (FC:{}, Reg:{}, Cnt:{}) - {}", LOCALHOST, PORT, functionCode, register, count, e.getMessage());
-        }
-        finally {
+        } finally {
             if (transport != null) {
                 try {
                     transport.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     logger.error(e.getMessage());
                 }
             }
@@ -159,7 +152,6 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
      * @param functionCode Function code to use
      * @param register     Register number
      * @param values       Values to apply
-     *
      * @return Response object
      */
     protected static ModbusResponse writeRequest(int functionCode, int register, int... values) {
@@ -199,23 +191,20 @@ public class AbstractTestModbusTCPMaster extends AbstractTestModbus {
             req.setUnitID(UNIT_ID);
 
             // Prepare the transaction
-            trans = (ModbusTCPTransaction)transport.createTransaction();
+            trans = (ModbusTCPTransaction) transport.createTransaction();
             trans.setRequest(req);
             trans.setReconnecting(true);
 
             // Execute the transaction
             trans.execute();
             return trans.getResponse();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.debug(e.getMessage());
-        }
-        finally {
+        } finally {
             if (transport != null) {
                 try {
                     transport.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     logger.error(e.getMessage());
                 }
             }

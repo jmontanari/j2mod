@@ -18,7 +18,7 @@ package com.ghgande.j2mod.modbus.utils;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
+import com.ghgande.j2mod.modbus.slave.ModbusSerialSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.junit.AfterClass;
@@ -39,7 +39,7 @@ import static org.junit.Assert.fail;
 public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
 
     protected static ModbusSerialMaster master;
-    protected static ModbusSlave slave;
+    protected static ModbusSerialSlave slave;
 
     @Before
     public void windowsOnly() {
@@ -58,8 +58,7 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
             parameters.setEncoding(Modbus.SERIAL_ENCODING_ASCII);
             master = new ModbusSerialMaster(parameters);
             master.connect();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             tearDownSlave();
             fail(String.format("Cannot initialise tests - %s", e.getMessage()));
         }
@@ -81,11 +80,10 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
      * Creates a Slave to use for testing
      *
      * @return Listener of the slave
-     *
      * @throws IOException If cannot connect to port
      */
-    static ModbusSlave createSerialSlave(boolean RTU) throws Exception {
-        ModbusSlave slave = null;
+    static ModbusSerialSlave createSerialSlave(boolean RTU) throws Exception {
+        ModbusSerialSlave slave = null;
         try {
             // Create the test data
             ProcessImage spi = getSimpleProcessImage();
@@ -100,8 +98,7 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
 
             // Open the slave
             slave.open();
-        }
-        catch (Exception x) {
+        } catch (Exception x) {
             if (slave != null) {
                 slave.close();
             }

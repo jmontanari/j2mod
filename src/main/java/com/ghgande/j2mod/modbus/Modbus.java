@@ -69,28 +69,28 @@ public interface Modbus {
 
     /**
      * <tt>read exception status</tt>
-     *
+     * <p>
      * Serial devices only.
      */
     int READ_EXCEPTION_STATUS = 7;
 
     /**
      * <tt>get serial diagnostics</tt>
-     *
+     * <p>
      * Serial devices only.
      */
     int READ_SERIAL_DIAGNOSTICS = 8;
 
     /**
      * <tt>get comm event counter</tt>
-     *
+     * <p>
      * Serial devices only.
      */
     int READ_COMM_EVENT_COUNTER = 11;
 
     /**
      * <tt>get comm event log</tt>
-     *
+     * <p>
      * Serial devices only.
      */
     int READ_COMM_EVENT_LOG = 12;
@@ -125,7 +125,7 @@ public interface Modbus {
 
     /**
      * <tt>mask write register</tt>
-     *
+     * <p>
      * Update a single register using its current value and an AND
      * and OR mask.
      */
@@ -133,7 +133,7 @@ public interface Modbus {
 
     /**
      * <tt>read / write multiple registers</tt>
-     *
+     * <p>
      * Write some number of registers, then read some number of
      * potentially other registers back.
      */
@@ -141,7 +141,7 @@ public interface Modbus {
 
     /**
      * <tt>read FIFO queue</tt>
-     *
+     * <p>
      * Read from a FIFO queue.
      */
     int READ_FIFO_QUEUE = 24;
@@ -156,7 +156,7 @@ public interface Modbus {
     /**
      * Defines the byte representation of the coil state <b>on</b>.
      */
-    int COIL_ON = (byte)255;
+    int COIL_ON = (byte) 255;
 
     /**
      * Defines the byte representation of the coil state <b>pos</b>.
@@ -166,12 +166,12 @@ public interface Modbus {
     /**
      * Defines the word representation of the coil state <b>on</b>.
      */
-    byte[] COIL_ON_BYTES = {(byte)COIL_ON, (byte)COIL_OFF};
+    byte[] COIL_ON_BYTES = {(byte) COIL_ON, (byte) COIL_OFF};
 
     /**
      * Defines the word representation of the coil state <b>pos</b>.
      */
-    byte[] COIL_OFF_BYTES = {(byte)COIL_OFF, (byte)COIL_OFF};
+    byte[] COIL_OFF_BYTES = {(byte) COIL_OFF, (byte) COIL_OFF};
 
     /**
      * Defines the maximum number of bits in multiple read/write

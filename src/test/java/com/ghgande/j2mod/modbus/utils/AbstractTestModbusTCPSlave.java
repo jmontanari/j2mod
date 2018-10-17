@@ -15,7 +15,7 @@
  */
 package com.ghgande.j2mod.modbus.utils;
 
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
+import com.ghgande.j2mod.modbus.slave.ModbusTCPSlave;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import static org.junit.Assume.assumeTrue;
 public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractTestModbusTCPSlave.class);
-    private static ModbusSlave slave = null;
+    private static ModbusTCPSlave slave = null;
     protected static File modPollTool;
     protected static int port = PORT;
 
@@ -47,8 +47,7 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
             port = PORT;
             modPollTool = TestUtils.loadModPollTool();
             slave = createTCPSlave();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fail(String.format("Cannot initialise tests - %s", e.getMessage()));
         }
     }
@@ -67,7 +66,6 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
      * @param register       Register reference number
      * @param type           Type of register to query
      * @param expectedOutput The text that should be found in the output
-     *
      * @return True if the expected output is available
      */
     public static boolean readModPoll(int register, int type, String expectedOutput) {
@@ -82,7 +80,6 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
      * @param type              Type of register to query
      * @param numberOfRegisters Number of registers to read
      * @param expectedOutput    The text that should be found in the output
-     *
      * @return True if the expected output is available
      */
     public static boolean readModPoll(int register, int type, int numberOfRegisters, String expectedOutput) {
@@ -96,7 +93,6 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
      * @param register       Register reference number
      * @param type           Type of register to query
      * @param expectedOutput The text that should be found in the output
-     *
      * @return True if the expected output is available
      */
     public static boolean writeModPoll(int register, int type, int value, String expectedOutput) {
@@ -111,7 +107,6 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
      * @param outValue          Value to write to register
      * @param expectedOutput    The text that should be found in the output
      * @param numberOfRegisters Number of registers to read
-     *
      * @return True if the expected output is available
      */
     private static boolean execModPoll(int register, int type, Integer outValue, String expectedOutput, int numberOfRegisters) {
@@ -124,8 +119,7 @@ public class AbstractTestModbusTCPSlave extends AbstractTestModbusTCPMaster {
                 logger.error(output);
             }
             return returnValue;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return false;
         }

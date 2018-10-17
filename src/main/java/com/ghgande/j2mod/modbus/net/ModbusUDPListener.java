@@ -17,6 +17,9 @@ package com.ghgande.j2mod.modbus.net;
 
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
+import com.ghgande.j2mod.modbus.slave.ModbusUDPSlave;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +57,7 @@ public class ModbusUDPListener extends AbstractModbusListener {
     public ModbusUDPListener() {
         try {
             address = InetAddress.getByAddress(new byte[]{0, 0, 0, 0});
-        }
-        catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             // Can't happen -- length is fixed by code.
         }
     }
@@ -84,8 +86,7 @@ public class ModbusUDPListener extends AbstractModbusListener {
         try {
             if (address == null) {
                 terminal = new UDPSlaveTerminal(InetAddress.getByAddress(new byte[]{0, 0, 0, 0}));
-            }
-            else {
+            } else {
                 terminal = new UDPSlaveTerminal(address);
             }
             terminal.setTimeout(timeout);
@@ -106,18 +107,15 @@ public class ModbusUDPListener extends AbstractModbusListener {
             while (listening) {
                 handleRequest(transport, this);
             }
-        }
-        catch (ModbusIOException ex1) {
+        } catch (ModbusIOException ex1) {
             if (!ex1.isEOF()) {
                 logger.error("Exception occurred before EOF while handling request", ex1);
             }
-        }
-        finally {
+        } finally {
             try {
                 terminal.deactivate();
                 transport.close();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // ignore
             }
         }
@@ -127,5 +125,20 @@ public class ModbusUDPListener extends AbstractModbusListener {
     public void stop() {
         terminal.deactivate();
         listening = false;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.ghgande.j2mod.modbus.net.AbstractModbusListener#getProcessImage(int)
+     */
+    @Override
+    public ProcessImage getProcessImage(int unitId) {
+        ModbusUDPSlave slave = ModbusSlaveFactory.getUDPSlave(address, port);
+        if (slave != null) {
+            return slave.getProcessImage(unitId);
+        } else {
+            return null;
+        }
     }
 }

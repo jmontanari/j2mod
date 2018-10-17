@@ -17,7 +17,7 @@ package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.net.ModbusSerialListener;
 import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
+import com.ghgande.j2mod.modbus.slave.ModbusSerialSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.slf4j.Logger;
@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author Dieter Wimberger
  * @author Julie Haugh
- *         Added ability to specify the number of coils, discreates, input and
- *         holding registers.
+ * Added ability to specify the number of coils, discreates, input and
+ * holding registers.
  * @author Steve O'Hara (4NG)
  * @version 2.0 (March 2016)
  */
@@ -56,26 +56,20 @@ public class SerialSlaveTest {
         for (arg = 0; arg < args.length; arg++) {
             if (args[arg].equals("--port") || args[arg].equals("-p")) {
                 portname = args[++arg];
-            }
-            else if (args[arg].equals("--unit") || args[arg].equals("-u")) {
+            } else if (args[arg].equals("--unit") || args[arg].equals("-u")) {
                 unit = Integer.parseInt(args[++arg]);
                 hasUnit = true;
-            }
-            else if (args[arg].equals("--coils") || args[arg].equals("-c")) {
+            } else if (args[arg].equals("--coils") || args[arg].equals("-c")) {
                 coils = Integer.parseInt(args[++arg]);
-            }
-            else if (args[arg].equals("--discretes") || args[arg].equals("-d")) {
+            } else if (args[arg].equals("--discretes") || args[arg].equals("-d")) {
                 discretes = Integer.parseInt(args[++arg]);
-            }
-            else if (args[arg].equals("--inputs") || args[arg].equals("-i")) {
+            } else if (args[arg].equals("--inputs") || args[arg].equals("-i")) {
                 inputs = Integer.parseInt(args[++arg]);
                 hasInputs = true;
-            }
-            else if (args[arg].equals("--holdings") || args[arg].equals("-h")) {
+            } else if (args[arg].equals("--holdings") || args[arg].equals("-h")) {
                 holdings = Integer.parseInt(args[++arg]);
                 hasHoldings = true;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -116,19 +110,17 @@ public class SerialSlaveTest {
                 for (int i = 0; i < holdings; i++) {
                     spi.addRegister(new SimpleRegister(i));
                 }
-            }
-            else {
+            } else {
                 spi.addRegister(new SimpleRegister(251));
             }
 
             if (hasInputs) {
-                System.out.printf("Adding input registers", inputs);
+                System.out.printf("Adding %d input registers", inputs);
 
                 for (int i = 0; i < inputs; i++) {
                     spi.addInputRegister(new SimpleInputRegister(i));
                 }
-            }
-            else {
+            } else {
                 spi.addInputRegister(new SimpleInputRegister(45));
             }
 
@@ -144,12 +136,11 @@ public class SerialSlaveTest {
             System.out.printf("Encoding [%s]", params.getEncoding());
 
             // 3. Setup and start slave
-            ModbusSlave slave = ModbusSlaveFactory.createSerialSlave(params);
+            ModbusSerialSlave slave = ModbusSlaveFactory.createSerialSlave(params);
             slave.addProcessImage(unit, spi);
             slave.open();
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

@@ -17,8 +17,8 @@ package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
+import com.ghgande.j2mod.modbus.slave.ModbusTCPSlave;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,11 +101,10 @@ public class TCPSlaveTest {
             spi.addInputRegister(new SimpleInputRegister(45));
 
             // 2. Setup and start slave
-            ModbusSlave slave = ModbusSlaveFactory.createTCPSlave(port, 5);
+            ModbusTCPSlave slave = ModbusSlaveFactory.createTCPSlave(port, 5);
             slave.addProcessImage(unit, spi);
             slave.open();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

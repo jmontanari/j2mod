@@ -16,7 +16,7 @@
 package com.ghgande.j2mod.modbus.utils;
 
 import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
+import com.ghgande.j2mod.modbus.slave.AbstractModbusSlave;
 import com.ghgande.j2mod.modbus.util.Observable;
 import com.ghgande.j2mod.modbus.util.Observer;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AbstractTestModbus {
     private static final Logger logger = LoggerFactory.getLogger(AbstractTestModbus.class);
-    public static ModbusSlave slave = null;
+    public static AbstractModbusSlave slave = null;
     public static final int UNIT_ID = 15;
     public static final int PORT = 1502;
     public static final String LOCALHOST = "localhost";
@@ -123,7 +123,7 @@ public class AbstractTestModbus {
         or = new ObservableRegister();
         or.setValue(3333);
         or.addObserver(observer);
-        spi.addRegister(or);  
+        spi.addRegister(or);
 
         or = new ObservableRegister();
         or.setValue(4444);
@@ -133,43 +133,43 @@ public class AbstractTestModbus {
         or = new ObservableRegister();
         or.setValue(1234);
         or.addObserver(observer);
-        spi.addRegister(40000,or);
+        spi.addRegister(40000, or);
 
-        or = new ObservableRegister();          
+        or = new ObservableRegister();
         or.setValue(2345);
         or.addObserver(observer);
-        spi.addRegister(40001,or);
+        spi.addRegister(40001, or);
 
-        or = new ObservableRegister();        
+        or = new ObservableRegister();
         or.setValue(3456);
         or.addObserver(observer);
-        spi.addRegister(40002,or);
-       
+        spi.addRegister(40002, or);
+
         // Some holding registers
         spi.addInputRegister(new SimpleInputRegister(45));
         spi.addInputRegister(new SimpleInputRegister(9999));
         spi.addInputRegister(new SimpleInputRegister(8888));
         spi.addInputRegister(new SimpleInputRegister(7777));
         spi.addInputRegister(new SimpleInputRegister(6666));
-        
+
         return spi;
     }
-    
-    
+
+
     /**
      * Returns true if the OS is windows
      *
      * @return True if Windows OS
      */
     boolean isWindows() {
-      return System.getProperty("os.name").startsWith("Windows");
+        return System.getProperty("os.name").startsWith("Windows");
     }
 
     private static class ObserverMonitor implements Observer {
         @Override
         public void update(Observable o, Object arg) {
             updatedRegister = o;
-            updatedArgument = (String)arg;
+            updatedArgument = (String) arg;
         }
     }
 }

@@ -67,13 +67,11 @@ public class SerialFacadeTest {
         if (args.length < 2) {
             printUsage();
             System.exit(1);
-        }
-        else {
+        } else {
             try {
                 portname = args[0];
                 slaveId = Integer.parseInt(args[1]);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 printUsage();
                 System.exit(1);
@@ -103,25 +101,22 @@ public class SerialFacadeTest {
             do {
                 if (msm.writeCoil(slaveId, 4, true)) {
                     System.out.printf("Set output 5 to true");
-                }
-                else {
+                } else {
                     System.out.printf("Error setting slave " + slaveId + " output 5");
                 }
                 BitVector coils = msm.readCoils(slaveId, 0, 8);
                 if (coils != null) {
                     System.out.printf("Coils:");
                     for (int i = 0; i < coils.size(); i++) {
-                        System.out.printf(" %d: %d", i, coils.getBit(i));
+                        System.out.printf(" %d: %b", i, coils.getBit(i));
                     }
 
                     try {
                         msm.writeMultipleCoils(slaveId, 0, coils);
-                    }
-                    catch (ModbusException ex) {
+                    } catch (ModbusException ex) {
                         System.out.printf("Error writing coils: %d", result);
                     }
-                }
-                else {
+                } else {
                     System.out.printf("Outputs: null");
                     msm.disconnect();
                     System.exit(-1);
@@ -132,11 +127,10 @@ public class SerialFacadeTest {
                 if (digInp != null) {
                     System.out.printf("Digital Inputs:");
                     for (int i = 0; i < digInp.size(); i++) {
-                        System.out.printf(" %d: %d", i, digInp.getBit(i));
+                        System.out.printf(" %d: %b", i, digInp.getBit(i));
                     }
                     System.out.printf("Inputs: %s", ModbusUtil.toHex(digInp.getBytes()));
-                }
-                else {
+                } else {
                     System.out.printf("Inputs: null");
                     msm.disconnect();
                     System.exit(-1);
@@ -150,8 +144,7 @@ public class SerialFacadeTest {
                         for (InputRegister anAi : ai) {
                             System.out.printf(" %d", anAi.getValue());
                         }
-                    }
-                    else {
+                    } else {
                         System.out.printf("Tag: %d null", i);
                         msm.disconnect();
                         System.exit(-1);
@@ -166,8 +159,7 @@ public class SerialFacadeTest {
                         for (Register reg : regs) {
                             System.out.printf(" %d", reg.getValue());
                         }
-                    }
-                    else {
+                    } else {
                         System.out.printf("RWRegisters %d: null", i);
                         msm.disconnect();
                         System.exit(-1);
@@ -178,10 +170,9 @@ public class SerialFacadeTest {
                 if (regs != null) {
                     System.out.printf("regs :");
                     for (int n = 0; n < regs.length; n++) {
-                        System.out.printf("  %d= %d", n, regs[n]);
+                        System.out.printf("  %d= %b", n, regs[n]);
                     }
-                }
-                else {
+                } else {
                     System.out.printf("Registers: null");
                     msm.disconnect();
                     System.exit(-1);
@@ -193,8 +184,7 @@ public class SerialFacadeTest {
                     }
                 }
             } while (!finished);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.printf("SerialFacadeTest driver: %s\n", e);
             e.printStackTrace();
         }

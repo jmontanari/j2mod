@@ -17,8 +17,8 @@ package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
+import com.ghgande.j2mod.modbus.slave.ModbusUDPSlave;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +71,10 @@ public class UDPSlaveTest {
             spi.addInputRegister(new SimpleInputRegister(45));
 
             // 2. Setup and start slave
-            ModbusSlave slave = ModbusSlaveFactory.createUDPSlave(port);
+            ModbusUDPSlave slave = ModbusSlaveFactory.createUDPSlave(port);
             slave.addProcessImage(1, spi);
             slave.open();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

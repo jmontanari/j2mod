@@ -18,6 +18,9 @@ package com.ghgande.j2mod.modbus.net;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.io.AbstractModbusTransport;
 import com.ghgande.j2mod.modbus.io.ModbusSerialTransport;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+import com.ghgande.j2mod.modbus.slave.ModbusSerialSlave;
+import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +31,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Dieter Wimberger
  * @author Julie Haugh Code cleanup in prep to refactor with ModbusListener
- *         interface
+ * interface
  * @author Steve O'Hara (4NG)
  * @version 2.0 (March 2016)
  */
@@ -36,6 +39,7 @@ public class ModbusSerialListener extends AbstractModbusListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ModbusSerialListener.class);
     private AbstractSerialConnection serialCon;
+    private SerialParameters serialParams;
 
     /**
      * Constructs a new <tt>ModbusSerialListener</tt> instance.
@@ -43,6 +47,7 @@ public class ModbusSerialListener extends AbstractModbusListener {
      * @param params a <tt>SerialParameters</tt> instance.
      */
     public ModbusSerialListener(SerialParameters params) {
+        this.serialParams = params;
         serialCon = new SerialConnection(params);
     }
 
@@ -59,7 +64,7 @@ public class ModbusSerialListener extends AbstractModbusListener {
     public void setTimeout(int timeout) {
         super.setTimeout(timeout);
         if (serialCon != null && listening) {
-            ModbusSerialTransport transport = (ModbusSerialTransport)serialCon.getModbusTransport();
+            ModbusSerialTransport transport = (ModbusSerialTransport) serialCon.getModbusTransport();
             if (transport != null) {
                 transport.setTimeout(timeout);
             }
@@ -91,16 +96,13 @@ public class ModbusSerialListener extends AbstractModbusListener {
             while (listening) {
                 try {
                     handleRequest(transport, this);
-                }
-                catch (ModbusIOException ex) {
+                } catch (ModbusIOException ex) {
                     logger.debug(ex.getMessage());
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Exception occurred while handling request.", e);
-        }
-        finally {
+        } finally {
             listening = false;
             serialCon.close();
         }
@@ -112,6 +114,37 @@ public class ModbusSerialListener extends AbstractModbusListener {
             serialCon.close();
         }
         listening = false;
+    }
+
+    /**
+     * @return the serialParams
+     */
+    public final SerialParameters getSerialParams() {
+        return serialParams;
+    }
+
+    /**
+     * @param serialParams the serialParams to set
+     */
+    public final void setSerialParams(SerialParameters serialParams) {
+        this.serialParams = serialParams;
+        serialCon = new SerialConnection(serialParams);
+    }
+
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.ghgande.j2mod.modbus.net.AbstractModbusListener#getProcessImage(int)
+     */
+    @Override
+    public ProcessImage getProcessImage(int unitId) {
+        ModbusSerialSlave slave = ModbusSlaveFactory.getSerialSlave(serialParams);
+        if (slave != null) {
+            return slave.getProcessImage(unitId);
+        } else {
+            return null;
+        }
     }
 
 }

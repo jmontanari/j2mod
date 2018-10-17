@@ -69,10 +69,9 @@ public class ReadFIFOTest {
             if (transport instanceof ModbusSerialTransport) {
                 transport.setTimeout(500);
                 if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
-                    ((ModbusSerialTransport)transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
-                }
-                else {
-                    ((ModbusSerialTransport)transport).setBaudRate(19200);
+                    ((ModbusSerialTransport) transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
+                } else {
+                    ((ModbusSerialTransport) transport).setBaudRate(19200);
                 }
 
                 Thread.sleep(2000);
@@ -83,12 +82,10 @@ public class ReadFIFOTest {
             if (args.length > 3) {
                 requestCount = Integer.parseInt(args[3]);
             }
-        }
-        catch (NumberFormatException x) {
+        } catch (NumberFormatException x) {
             System.out.printf("Invalid parameter");
             usage();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             usage();
             System.exit(1);
@@ -111,16 +108,13 @@ public class ReadFIFOTest {
                 // Execute the transaction.
                 try {
                     trans.execute();
-                }
-                catch (ModbusSlaveException x) {
+                } catch (ModbusSlaveException x) {
                     logger.error("Slave Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusIOException x) {
+                } catch (ModbusIOException x) {
                     logger.error("I/O Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusException x) {
+                } catch (ModbusException x) {
                     logger.error("Modbus Exception: {}", x.getLocalizedMessage());
                     continue;
                 }
@@ -131,14 +125,13 @@ public class ReadFIFOTest {
                     continue;
                 }
                 if (dummy instanceof ExceptionResponse) {
-                    ExceptionResponse exception = (ExceptionResponse)dummy;
+                    ExceptionResponse exception = (ExceptionResponse) dummy;
 
                     System.out.printf(exception.toString());
 
                     continue;
-                }
-                else if (dummy instanceof ReadFIFOQueueResponse) {
-                    response = (ReadFIFOQueueResponse)dummy;
+                } else if (dummy instanceof ReadFIFOQueueResponse) {
+                    response = (ReadFIFOQueueResponse) dummy;
 
                     System.out.printf("Response: %s", response.getHexMessage());
 
@@ -146,8 +139,8 @@ public class ReadFIFOTest {
                     System.out.printf("%d values", count);
 
                     for (int j = 0; j < count; j++) {
-                        short value = (short)response.getRegister(j);
-                        System.out.printf("data[%d] = %f", j, value);
+                        short value = (short) response.getRegister(j);
+                        System.out.printf("data[%d] = %d", j, value);
                     }
                     continue;
                 }
@@ -160,8 +153,7 @@ public class ReadFIFOTest {
             if (transport != null) {
                 transport.close();
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         System.exit(0);

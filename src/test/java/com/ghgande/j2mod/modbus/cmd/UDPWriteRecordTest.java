@@ -105,16 +105,13 @@ public class UDPWriteRecordTest {
             if (args.length > 4) {
                 requestCount = Integer.parseInt(args[4]);
             }
-        }
-        catch (NumberFormatException x) {
+        } catch (NumberFormatException x) {
             System.out.printf("Invalid parameter");
             usage();
-        }
-        catch (UnknownHostException x) {
+        } catch (UnknownHostException x) {
             System.out.printf("Unknown host: %s", hostName);
             System.exit(1);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             usage();
             System.exit(1);
@@ -148,16 +145,13 @@ public class UDPWriteRecordTest {
                 // Execute the transaction.
                 try {
                     trans.execute();
-                }
-                catch (ModbusSlaveException x) {
+                } catch (ModbusSlaveException x) {
                     logger.error("Slave Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusIOException x) {
+                } catch (ModbusIOException x) {
                     logger.error("I/O Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusException x) {
+                } catch (ModbusException x) {
                     logger.error("Modbus Exception: {}", x.getLocalizedMessage());
                     continue;
                 }
@@ -173,14 +167,13 @@ public class UDPWriteRecordTest {
                     continue;
                 }
                 if (dummy instanceof ExceptionResponse) {
-                    ExceptionResponse exception = (ExceptionResponse)dummy;
+                    ExceptionResponse exception = (ExceptionResponse) dummy;
 
                     System.out.printf(exception.toString());
 
                     continue;
-                }
-                else if (dummy instanceof ReadFileRecordResponse) {
-                    rdResponse = (ReadFileRecordResponse)dummy;
+                } else if (dummy instanceof ReadFileRecordResponse) {
+                    rdResponse = (ReadFileRecordResponse) dummy;
 
                     System.out.printf("Response: %s", rdResponse.getHexMessage());
 
@@ -192,13 +185,12 @@ public class UDPWriteRecordTest {
                             values[k] = data.getRegister(k).toShort();
                         }
 
-                        System.out.printf("read data[%d] = ", j, Arrays.toString(values));
+                        System.out.printf("read data[%d] = %s", j, Arrays.toString(values));
 
                         WriteFileRecordRequest.RecordRequest wrData = new WriteFileRecordRequest.RecordRequest(file, record + i, values);
                         wrRequest.addRequest(wrData);
                     }
-                }
-                else {
+                } else {
                     // Unknown message.
                     System.out.printf("Unknown Response: %s", dummy.getHexMessage());
                 }
@@ -210,16 +202,13 @@ public class UDPWriteRecordTest {
                 // Execute the transaction.
                 try {
                     trans.execute();
-                }
-                catch (ModbusSlaveException x) {
+                } catch (ModbusSlaveException x) {
                     logger.error("Slave Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusIOException x) {
+                } catch (ModbusIOException x) {
                     logger.error("I/O Exception: {}", x.getLocalizedMessage());
                     continue;
-                }
-                catch (ModbusException x) {
+                } catch (ModbusException x) {
                     logger.error("Modbus Exception: {}", x.getLocalizedMessage());
                     continue;
                 }
@@ -230,13 +219,12 @@ public class UDPWriteRecordTest {
                     continue;
                 }
                 if (dummy instanceof ExceptionResponse) {
-                    ExceptionResponse exception = (ExceptionResponse)dummy;
+                    ExceptionResponse exception = (ExceptionResponse) dummy;
 
                     System.out.printf(exception.toString());
 
-                }
-                else if (dummy instanceof WriteFileRecordResponse) {
-                    wrResponse = (WriteFileRecordResponse)dummy;
+                } else if (dummy instanceof WriteFileRecordResponse) {
+                    wrResponse = (WriteFileRecordResponse) dummy;
 
                     System.out.printf("Response: %s", wrResponse.getHexMessage());
 
@@ -250,8 +238,7 @@ public class UDPWriteRecordTest {
 
                         System.out.printf("write response data[%d] = %s", j, Arrays.toString(values));
                     }
-                }
-                else {
+                } else {
                     // Unknown message.
                     System.out.printf("Unknown Response: %s", dummy.getHexMessage());
                 }
@@ -259,8 +246,7 @@ public class UDPWriteRecordTest {
 
             // Teardown the connection.
             connection.close();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
