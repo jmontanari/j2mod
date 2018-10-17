@@ -42,10 +42,9 @@ public class ModbusSlaveFactory {
     /**
      * Creates a TCP modbus slave or returns the one already allocated to this port
      *
-     * @param port Port to listen on
+     * @param port     Port to listen on
      * @param poolSize Pool size of listener threads
      * @return new or existing TCP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusTCPSlave createTCPSlave(int port, int poolSize) throws ModbusException {
@@ -55,11 +54,10 @@ public class ModbusSlaveFactory {
     /**
      * Creates a TCP modbus slave or returns the one already allocated to this port
      *
-     * @param port Port to listen on
-     * @param poolSize Pool size of listener threads
+     * @param port          Port to listen on
+     * @param poolSize      Pool size of listener threads
      * @param useRtuOverTcp True if the RTU protocol should be used over TCP
      * @return new or existing TCP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusTCPSlave createTCPSlave(int port, int poolSize, boolean useRtuOverTcp) throws ModbusException {
@@ -69,12 +67,11 @@ public class ModbusSlaveFactory {
     /**
      * Creates a TCP modbus slave or returns the one already allocated to this port
      *
-     * @param address IP address to listen on
-     * @param port Port to listen on
-     * @param poolSize Pool size of listener threads
+     * @param address       IP address to listen on
+     * @param port          Port to listen on
+     * @param poolSize      Pool size of listener threads
      * @param useRtuOverTcp True if the RTU protocol should be used over TCP
      * @return new or existing TCP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusTCPSlave createTCPSlave(InetAddress address, int port, int poolSize, boolean useRtuOverTcp) throws ModbusException {
@@ -84,12 +81,11 @@ public class ModbusSlaveFactory {
     /**
      * Creates a TCP modbus slave or returns the one already allocated to this port
      *
-     * @param address IP address to listen on
-     * @param port Port to listen on
-     * @param pool  Executor Service of listener threads.
+     * @param address       IP address to listen on
+     * @param port          Port to listen on
+     * @param pool          Executor Service of listener threads.
      * @param useRtuOverTcp True if the RTU protocol should be used over TCP
      * @return new or existing TCP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusTCPSlave createTCPSlave(InetAddress address, int port, ExecutorService pool,
@@ -109,9 +105,9 @@ public class ModbusSlaveFactory {
 
     /**
      * Return the Modbus TCP slave at the Address:port
-     * 
+     *
      * @param address IP address
-     * @param port Port to listen on
+     * @param port    Port to listen on
      * @return ModbusTCP Slave if found
      */
     public static ModbusTCPSlave getTCPSlave(InetAddress address, int port) {
@@ -127,7 +123,6 @@ public class ModbusSlaveFactory {
      *
      * @param port Port to listen on
      * @return new or existing UDP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusUDPSlave createUDPSlave(int port) throws ModbusException {
@@ -138,9 +133,8 @@ public class ModbusSlaveFactory {
      * Creates a UDP modbus slave or returns the one already allocated to this port
      *
      * @param address IP address to listen on
-     * @param port Port to listen on
+     * @param port    Port to listen on
      * @return new or existing UDP modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusUDPSlave createUDPSlave(InetAddress address, int port) throws ModbusException {
@@ -157,9 +151,9 @@ public class ModbusSlaveFactory {
 
     /**
      * Return the Modbus UDP slave at the Address:port
-     * 
+     *
      * @param address IP address
-     * @param port Port to listen on
+     * @param port    Port to listen on
      * @return ModbusUDP Slave if found
      */
     public static ModbusUDPSlave getUDPSlave(InetAddress address, int port) {
@@ -175,7 +169,6 @@ public class ModbusSlaveFactory {
      *
      * @param serialParams Serial parameters for serial type slaves
      * @return new or existing Serial modbus slave associated with the port
-     *
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusSerialSlave createSerialSlave(SerialParameters serialParams) throws ModbusException {
@@ -187,7 +180,7 @@ public class ModbusSlaveFactory {
 
         String key = ModbusSlaveType.SERIAL + ":" + serialParams.getPortName();
         if (slaves.containsKey(key)) {
-            return (ModbusSerialSlave) slaves.get(serialParams.getPortName());
+            return (ModbusSerialSlave) slaves.get(key);
         } else {
             ModbusSerialSlave slave = new ModbusSerialSlave(serialParams);
             slaves.put(key, slave);
@@ -197,7 +190,7 @@ public class ModbusSlaveFactory {
 
     /**
      * Return the Modbus Serial slave using the serialParameters
-     * 
+     *
      * @param serialParams - Serial Parameters
      * @return ModbusSerial Slave if found;
      */
@@ -212,7 +205,7 @@ public class ModbusSlaveFactory {
      *
      * @param slave Slave to remove
      */
-    public static synchronized void close(AbstractModbusSlave<?> slave){
+    public static synchronized void close(AbstractModbusSlave<?> slave) {
         if (slave != null) {
             slave.closeListener();
             if (slave instanceof ModbusTCPSlave) {
@@ -221,9 +214,7 @@ public class ModbusSlaveFactory {
             } else if (slave instanceof ModbusUDPSlave) {
                 ModbusUDPSlave tcpSlave = (ModbusUDPSlave) slave;
                 slaves.remove(ModbusSlaveType.UDP + ":" + tcpSlave.getAddress() + ":" + tcpSlave.getPort());
-            }
-
-            else if (slave instanceof ModbusSerialSlave) {
+            } else if (slave instanceof ModbusSerialSlave) {
                 ModbusSerialSlave tcpSlave = (ModbusSerialSlave) slave;
                 slaves.remove(ModbusSlaveType.SERIAL + ":" + tcpSlave.getSerialParams().getPortName());
             }
@@ -242,13 +233,13 @@ public class ModbusSlaveFactory {
 
     /**
      * Standardadize on the Inet address .IF null return 0.0.0.0
-     * 
+     *
      * @param address - address
      * @return InetAddress
      */
     private static InetAddress standardizeAddress(InetAddress address) {
         try {
-            address = address == null ? InetAddress.getByAddress(new byte[] { 0, 0, 0, 0 }) : address;
+            address = address == null ? InetAddress.getByAddress(new byte[]{0, 0, 0, 0}) : address;
         } catch (UnknownHostException e) {
             // Can't happen -- size is fixed.
         }
