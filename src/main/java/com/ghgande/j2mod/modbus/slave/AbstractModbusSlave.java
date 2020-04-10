@@ -34,12 +34,6 @@ public abstract class AbstractModbusSlave<T extends AbstractModbusListener> {
     /**
      * Creates an appropriate type of listener
      *
-     * @param type Type of slave to create
-     * @param address IP address to listen on
-     * @param port Port to listen on if IP type
-     * @param poolSize Pool size for TCP slaves
-     * @param serialParams Serial parameters for serial type slaves
-     * @param useRtuOverTcp True if the RTU protocol should be used over TCP
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     protected AbstractModbusSlave() throws ModbusException {
