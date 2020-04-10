@@ -71,12 +71,6 @@ public class ReadFileRecordTest {
             transport = ModbusMasterFactory.createModbusMaster(args[0]);
             if (transport instanceof ModbusSerialTransport) {
                 transport.setTimeout(500);
-                if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
-                    ((ModbusSerialTransport) transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
-                } else {
-                    ((ModbusSerialTransport) transport).setBaudRate(19200);
-                }
-
                 Thread.sleep(2000);
             }
             unit = Integer.parseInt(args[1]);
@@ -87,10 +81,12 @@ public class ReadFileRecordTest {
             if (args.length > 5) {
                 requestCount = Integer.parseInt(args[5]);
             }
-        } catch (NumberFormatException x) {
+        }
+        catch (NumberFormatException x) {
             System.out.printf("Invalid parameter");
             usage();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
             usage();
             System.exit(1);
@@ -115,13 +111,16 @@ public class ReadFileRecordTest {
                 // Execute the transaction.
                 try {
                     trans.execute();
-                } catch (ModbusSlaveException x) {
+                }
+                catch (ModbusSlaveException x) {
                     logger.error("Slave Exception: {}", x.getLocalizedMessage());
                     continue;
-                } catch (ModbusIOException x) {
+                }
+                catch (ModbusIOException x) {
                     logger.error("I/O Exception: {}", x.getLocalizedMessage());
                     continue;
-                } catch (ModbusException x) {
+                }
+                catch (ModbusException x) {
                     logger.error("Modbus Exception: {}", x.getLocalizedMessage());
                     continue;
                 }
@@ -132,11 +131,12 @@ public class ReadFileRecordTest {
                     continue;
                 }
                 if (dummy instanceof ExceptionResponse) {
-                    ExceptionResponse exception = (ExceptionResponse) dummy;
+                    ExceptionResponse exception = (ExceptionResponse)dummy;
                     System.out.printf(exception.toString());
                     continue;
-                } else if (dummy instanceof ReadFileRecordResponse) {
-                    response = (ReadFileRecordResponse) dummy;
+                }
+                else if (dummy instanceof ReadFileRecordResponse) {
+                    response = (ReadFileRecordResponse)dummy;
 
                     System.out.printf("Response: %s", response.getHexMessage());
 
@@ -147,7 +147,7 @@ public class ReadFileRecordTest {
                         for (int k = 0; k < data.getWordCount(); k++) {
                             values[k] = data.getRegister(k).toShort();
                         }
-                        System.out.printf("data[%d] = %s", i, Arrays.toString(values));
+                        System.out.printf("data[%d][%d] = %s", i, Arrays.toString(values));
                     }
                     continue;
                 }
@@ -172,17 +172,19 @@ public class ReadFileRecordTest {
                     ModbusResponse dummy = trans.getResponse();
 
                     if (dummy instanceof ReadCommEventCounterResponse) {
-                        ReadCommEventCounterResponse eventResponse = (ReadCommEventCounterResponse) dummy;
+                        ReadCommEventCounterResponse eventResponse = (ReadCommEventCounterResponse)dummy;
                         System.out.printf("  Events: %s", eventResponse.getEventCount());
                     }
-                } catch (ModbusException x) {
+                }
+                catch (ModbusException x) {
                     // Do nothing -- this isn't required.
                 }
 
                 // Teardown the connection.
                 transport.close();
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         System.exit(0);
