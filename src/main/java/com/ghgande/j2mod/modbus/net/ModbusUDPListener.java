@@ -32,6 +32,7 @@ import java.net.UnknownHostException;
  * @author Dieter Wimberger
  * @author Julie Haugh
  * @author Steve O'Hara (4NG)
+ * @author Joe Montanari
  * @version 2.0 (March 2016)
  */
 public class ModbusUDPListener extends AbstractModbusListener {

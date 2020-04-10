@@ -27,12 +27,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Class that implements a ModbusTCPListener. <p> If listening, it accepts incoming requests passing them on to be handled. If not
- * listening, silently drops the requests.
+ * Class that implements a ModbusTCPListener.
+ * <p>
+ * If listening, it accepts incoming requests passing them on to be handled.
+ * If not listening, silently drops the requests.
  *
  * @author Dieter Wimberger
  * @author Julie Haugh
- * @author Steve O'Hara (4energy)
+ * @author Steve O'Hara (4NG)
+ * @author Joe Montanari
  * @version 2.0 (March 2016)
  */
 public class ModbusTCPListener extends AbstractModbusListener {
@@ -41,7 +44,6 @@ public class ModbusTCPListener extends AbstractModbusListener {
 
     private ServerSocket serverSocket = null;
     private ExecutorService threadPool;
-    //private Thread listener;
     private boolean useRtuOverTcp;
 
     /**
@@ -188,9 +190,6 @@ public class ModbusTCPListener extends AbstractModbusListener {
             if (serverSocket != null) {
                 serverSocket.close();
             }
-            //if (listener != null) {
-            //listener.join();
-            //}
             if (threadPool != null) {
                 threadPool.shutdown();
             }
