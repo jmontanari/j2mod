@@ -69,24 +69,28 @@ public interface Modbus {
 
     /**
      * <tt>read exception status</tt>
+     *
      * Serial devices only.
      */
     int READ_EXCEPTION_STATUS = 7;
 
     /**
      * <tt>get serial diagnostics</tt>
+     *
      * Serial devices only.
      */
     int READ_SERIAL_DIAGNOSTICS = 8;
 
     /**
      * <tt>get comm event counter</tt>
+     *
      * Serial devices only.
      */
     int READ_COMM_EVENT_COUNTER = 11;
 
     /**
      * <tt>get comm event log</tt>
+     *
      * Serial devices only.
      */
     int READ_COMM_EVENT_LOG = 12;
@@ -121,6 +125,7 @@ public interface Modbus {
 
     /**
      * <tt>mask write register</tt>
+     *
      * Update a single register using its current value and an AND
      * and OR mask.
      */
@@ -128,6 +133,7 @@ public interface Modbus {
 
     /**
      * <tt>read / write multiple registers</tt>
+     *
      * Write some number of registers, then read some number of
      * potentially other registers back.
      */
@@ -135,6 +141,7 @@ public interface Modbus {
 
     /**
      * <tt>read FIFO queue</tt>
+     *
      * Read from a FIFO queue.
      */
     int READ_FIFO_QUEUE = 24;
