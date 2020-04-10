@@ -142,7 +142,7 @@ public class ModbusTCPListener extends AbstractModbusListener {
             int floodProtection = 100;
             serverSocket = new ServerSocket(port, floodProtection, address);
             serverSocket.setSoTimeout(timeout);
-            logger.debug("Listening to {} (Port {})", serverSocket.toString(), port);
+            logger.debug("Listening to {} (Port {})", serverSocket, port);
         }
 
         // Catch any fatal errors and set the listening flag to false to indicate an error
@@ -166,7 +166,7 @@ public class ModbusTCPListener extends AbstractModbusListener {
                 } catch (SocketTimeoutException e) {
                     continue;
                 }
-                logger.debug("Making new connection {}", incoming.toString());
+                logger.debug("Making new connection {}", incoming);
                 if (listening) {
                     TCPSlaveConnection slave = new TCPSlaveConnection(incoming, useRtuOverTcp);
                     slave.setTimeout(timeout);
